@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">sgv.app</string>
+    <string name="invalid_name">Preencha o nome.</string>
+    <string name="invalid_email">Email invalido</string>
+    <string name="invalid_password">Preencha a Senha</string>
+    <string name="invalid_cpf">Preencha o CPF</string>
+    <string name="invalid_phone">Preencha o Celular</string>
 </resources>
