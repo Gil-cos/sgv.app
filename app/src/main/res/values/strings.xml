@@ -5,4 +5,6 @@
     <string name="invalid_password">Preencha a Senha</string>
     <string name="invalid_cpf">Preencha o CPF</string>
     <string name="invalid_phone">Preencha o Celular</string>
+    <string name="access_your_account">Acesse sua conta</string>
+    <string name="create_account">Crie sua conta grátis</string>
 </resources>
