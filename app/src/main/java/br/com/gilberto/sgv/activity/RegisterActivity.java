@@ -7,6 +7,7 @@ import android.util.Log;
 import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
@@ -15,6 +16,7 @@ import com.basgeekball.awesomevalidation.utility.RegexTemplate;
 
 import br.com.gilberto.sgv.R;
 import br.com.gilberto.sgv.client.SgvClient;
+import br.com.gilberto.sgv.domain.Role;
 import br.com.gilberto.sgv.domain.User;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,6 +28,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private EditText name, email, password, cpf, phone;
     private Button registerBtn;
+    private RadioButton passanger, driver;
     private AwesomeValidation awesomeValidation;
     private Retrofit retrofit;
     private SgvClient sgvClient;
@@ -41,6 +44,8 @@ public class RegisterActivity extends AppCompatActivity {
         cpf = findViewById(R.id.editCpf);
         phone = findViewById(R.id.editPhone);
         registerBtn = findViewById(R.id.buttonRegister);
+        passanger = findViewById(R.id.passangerRadio);
+        driver = findViewById(R.id.driverRadio);
 
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
         addFormValidations();
@@ -60,12 +65,17 @@ public class RegisterActivity extends AppCompatActivity {
                         cpf.getText().toString(),
                         email.getText().toString(),
                         password.getText().toString(),
+                        getRole(),
                         null);
                 registerUser(user);
             } else {
-                Toast.makeText(getApplicationContext(), "Formulario Invalido", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.invalid_form, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private Role getRole() {
+        return passanger.isChecked() ? Role.PASSANGER : Role.DRIVER;
     }
 
     private void addFormValidations() {

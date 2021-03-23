@@ -7,4 +7,14 @@
     <string name="invalid_phone">Preencha o Celular</string>
     <string name="access_your_account">Acesse sua conta</string>
     <string name="create_account">Crie sua conta grátis</string>
+    <string name="register_btn">Cadastrar</string>
+    <string name="role">Categoria</string>
+    <string name="passanger">Passageiro</string>
+    <string name="driver">Motorista</string>
+    <string name="email">Email</string>
+    <string name="password">Senha</string>
+    <string name="cpf">CPF</string>
+    <string name="phone">Celular</string>
+    <string name="name">Nome</string>
+    <string name="invalid_form">Formulario Invalido</string>
 </resources>

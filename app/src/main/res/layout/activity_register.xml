@@ -29,12 +29,13 @@
         android:drawableLeft="@drawable/ic_baseline_person_24"
         android:drawablePadding="5dp"
         android:ems="10"
-        android:hint="Nome"
+        android:hint="@string/name"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toTopOf="@+id/editEmail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+        app:layout_constraintTop_toBottomOf="@+id/textView6"
+        android:drawableStart="@drawable/ic_baseline_person_24" />
 
     <EditText
         android:id="@+id/editEmail"
@@ -44,12 +45,14 @@
         android:drawableLeft="@drawable/ic_baseline_email_24"
         android:drawablePadding="5dp"
         android:ems="10"
-        android:hint="Email"
+        android:hint="@string/email"
         android:inputType="textEmailAddress"
         app:layout_constraintBottom_toTopOf="@+id/editPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editName" />
+        app:layout_constraintTop_toBottomOf="@+id/editName"
+        android:autofillHints=""
+        android:drawableStart="@drawable/ic_baseline_email_24" />
 
     <EditText
         android:id="@+id/editPassword"
@@ -59,27 +62,31 @@
         android:drawableLeft="@drawable/ic_baseline_lock_24"
         android:drawablePadding="5dp"
         android:ems="10"
-        android:hint="Senha"
+        android:hint="@string/password"
         android:inputType="textPassword"
         app:layout_constraintBottom_toTopOf="@+id/editCpf"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/editEmail"
+        android:autofillHints=""
+        android:drawableStart="@drawable/ic_baseline_lock_24" />
 
     <EditText
         android:id="@+id/editCpf"
         android:layout_width="347dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:drawableLeft="@drawable/ic_baseline_lock_24"
+        android:drawableLeft="@drawable/ic_baseline_confirmation_number_24"
         android:drawablePadding="5dp"
         android:ems="10"
-        android:hint="CPF"
+        android:hint="@string/cpf"
         android:inputType="number|textPassword"
         app:layout_constraintBottom_toTopOf="@+id/editPhone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/editPassword"
+        android:autofillHints=""
+        android:drawableStart="@drawable/ic_baseline_confirmation_number_24" />
 
     <EditText
         android:id="@+id/editPhone"
@@ -89,34 +96,64 @@
         android:drawableLeft="@drawable/ic_baseline_phone_24"
         android:drawablePadding="5dp"
         android:ems="10"
-        android:hint="Celular"
+        android:hint="@string/phone"
         android:inputType="textPassword|phone"
-        app:layout_constraintBottom_toTopOf="@+id/spinner"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editCpf" />
+        app:layout_constraintTop_toBottomOf="@+id/editCpf"
+        android:autofillHints=""
+        android:drawableStart="@drawable/ic_baseline_phone_24" />
 
     <Button
         android:id="@+id/buttonRegister"
         android:layout_width="347dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
+        android:layout_marginTop="8dp"
         android:background="@color/purple_500"
-        android:text="Cadastrar"
+        android:text="@string/register_btn"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner" />
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
 
-    <Spinner
-        android:id="@+id/spinner"
-        android:layout_width="347dp"
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/role"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/radioGroup"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editPhone" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toTopOf="@+id/buttonRegister"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editPhone" />
+        app:layout_constraintTop_toBottomOf="@+id/textView">
+
+        <RadioButton
+            android:id="@+id/driverRadio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/driver"
+            android:textSize="14sp" />
+
+        <RadioButton
+            android:id="@+id/passangerRadio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/passanger"
+            android:textSize="14sp" />
+    </RadioGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
