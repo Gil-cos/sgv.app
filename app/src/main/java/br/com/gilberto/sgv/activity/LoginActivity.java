@@ -2,6 +2,8 @@ package br.com.gilberto.sgv.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.widget.Button;
@@ -15,6 +17,7 @@ import com.basgeekball.awesomevalidation.utility.RegexTemplate;
 import br.com.gilberto.sgv.R;
 import br.com.gilberto.sgv.client.SgvClient;
 import br.com.gilberto.sgv.dto.TokenDto;
+import br.com.gilberto.sgv.util.SharedPreferencesUtils;
 import br.com.gilberto.sgv.wrapper.LoginWrapper;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
     private AwesomeValidation awesomeValidation;
     private Retrofit retrofit;
     private SgvClient sgvClient;
+    private SharedPreferencesUtils preferencesUtils = new SharedPreferencesUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +56,6 @@ public class LoginActivity extends AppCompatActivity {
             if (awesomeValidation.validate()) {
                 login(new LoginWrapper(email.getText().toString(), password.getText().toString()));
             }
-
         });
     }
 
@@ -65,18 +68,24 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<TokenDto> call, Response<TokenDto> response) {
                 if (response.isSuccessful()) {
                     TokenDto tokenDto = response.body();
-                    Toast.makeText(getApplicationContext(), tokenDto.getToken(), Toast.LENGTH_SHORT).show();
+                    saveToken(tokenDto);
+                    startActivity(new Intent(getApplicationContext(), UserActivity.class));
+                    finish();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Erro ao logar", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.login_error, Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<TokenDto> call, Throwable t) {
-                 Toast.makeText(getApplicationContext(), "Erro ao logar", Toast.LENGTH_SHORT).show();
+                 Toast.makeText(getApplicationContext(), R.string.login_error, Toast.LENGTH_SHORT).show();
             }
         });
 
+    }
+
+    private void saveToken(TokenDto tokenDto) {
+        preferencesUtils.saveToken(tokenDto, getSharedPreferences(getString(R.string.authenticationInfo), 0));
     }
 
     private void addFormValidations() {

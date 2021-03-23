@@ -2,6 +2,7 @@ package br.com.gilberto.sgv.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
@@ -18,6 +19,8 @@ import br.com.gilberto.sgv.R;
 import br.com.gilberto.sgv.client.SgvClient;
 import br.com.gilberto.sgv.domain.Role;
 import br.com.gilberto.sgv.domain.User;
+import br.com.gilberto.sgv.dto.TokenDto;
+import br.com.gilberto.sgv.util.SharedPreferencesUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -32,6 +35,7 @@ public class RegisterActivity extends AppCompatActivity {
     private AwesomeValidation awesomeValidation;
     private Retrofit retrofit;
     private SgvClient sgvClient;
+    private SharedPreferencesUtils preferencesUtils = new SharedPreferencesUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +104,9 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful()) {
-                    Toast.makeText(getApplicationContext(), "Usuário Cadastrado", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.user_register, Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                    finish();
                 }
             }
 
