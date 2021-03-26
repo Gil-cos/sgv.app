@@ -1,4 +1,4 @@
-package br.com.gilberto.sgv.domain;
+package br.com.gilberto.sgv.domain.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ public enum Role {
 
     ADMIN("ADMIN"),
     DRIVER("DRIVER"),
-    PASSANGER("PASSANGER"),
+    PASSENGER("PASSENGER"),
     SYSTEM("SYSTEM");
 
     private final String role;

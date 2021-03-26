@@ -29,7 +29,14 @@
     <string name="action_settings">Settings</string>
 
     <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
+    <string name="menu_user_info">Perfil</string>
     <string name="menu_slideshow">Slideshow</string>
     <string name="user_register">Usuário Cadastrado</string>
+    <string name="cep">CEP</string>
+    <string name="number">Número</string>
+    <string name="address">Endereço:</string>
+    <string name="neighborhood">Bairro</string>
+    <string name="city">Cidade</string>
+    <string name="street">Rua</string>
+    <string name="save">Salvar</string>
 </resources>

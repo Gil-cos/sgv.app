@@ -1,8 +1,12 @@
 package br.com.gilberto.sgv.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -17,17 +21,32 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import br.com.gilberto.sgv.R;
+import br.com.gilberto.sgv.client.CepClient;
+import br.com.gilberto.sgv.client.SgvClient;
+import br.com.gilberto.sgv.domain.user.User;
+import br.com.gilberto.sgv.util.SharedPreferencesUtils;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class UserActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
+    private Retrofit retrofit;
+    private SgvClient sgvClient;
+    private TextView name, email;
+    private SharedPreferencesUtils preferencesUtils = new SharedPreferencesUtils();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,6 +55,7 @@ public class UserActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -47,6 +67,38 @@ public class UserActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+        View headerView = navigationView.getHeaderView(0);
+        name = (TextView) headerView.findViewById(R.id.navUsername);
+        email = (TextView) headerView.findViewById(R.id.navEmail);
+
+        retrofit = new Retrofit.Builder()
+                .baseUrl("http://10.0.2.2:8090")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        sgvClient = retrofit.create(SgvClient.class);
+
+        getUserInfo();
+    }
+
+    private void getUserInfo() {
+
+        Call<User> userCall = sgvClient.getUserInfo(preferencesUtils.retrieveToken(getSharedPreferences(getString(R.string.authenticationInfo), 0)));
+
+        userCall.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful()) {
+                    final User user = response.body();
+                    name.setText(user.getName());
+                    email.setText(user.getEmail());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+
+            }
+        });
     }
 
     @Override

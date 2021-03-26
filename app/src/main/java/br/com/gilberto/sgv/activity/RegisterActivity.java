@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,9 +16,8 @@ import com.basgeekball.awesomevalidation.utility.RegexTemplate;
 
 import br.com.gilberto.sgv.R;
 import br.com.gilberto.sgv.client.SgvClient;
-import br.com.gilberto.sgv.domain.Role;
-import br.com.gilberto.sgv.domain.User;
-import br.com.gilberto.sgv.dto.TokenDto;
+import br.com.gilberto.sgv.domain.user.Role;
+import br.com.gilberto.sgv.domain.user.User;
 import br.com.gilberto.sgv.util.SharedPreferencesUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -42,7 +40,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        name = findViewById(R.id.editName);
+        name = findViewById(R.id.userInfoName);
         email = findViewById(R.id.editEmail);
         password = findViewById(R.id.editPassword);
         cpf = findViewById(R.id.editCpf);
@@ -63,14 +61,12 @@ public class RegisterActivity extends AppCompatActivity {
         registerBtn.setOnClickListener(v -> {
             if (awesomeValidation.validate()) {
                 final User user = new User(
-                        null,
                         name.getText().toString(),
                         phone.getText().toString(),
                         cpf.getText().toString(),
                         email.getText().toString(),
                         password.getText().toString(),
-                        getRole(),
-                        null);
+                        getRole());
                 registerUser(user);
             } else {
                 Toast.makeText(getApplicationContext(), R.string.invalid_form, Toast.LENGTH_SHORT).show();
@@ -79,11 +75,11 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private Role getRole() {
-        return passanger.isChecked() ? Role.PASSANGER : Role.DRIVER;
+        return passanger.isChecked() ? Role.PASSENGER : Role.DRIVER;
     }
 
     private void addFormValidations() {
-        awesomeValidation.addValidation(this, R.id.editName,
+        awesomeValidation.addValidation(this, R.id.userInfoName,
                 RegexTemplate.NOT_EMPTY, R.string.invalid_name);
         awesomeValidation.addValidation(this, R.id.editEmail,
                 Patterns.EMAIL_ADDRESS, R.string.invalid_email);
@@ -112,7 +108,7 @@ public class RegisterActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                
             }
         });
     }

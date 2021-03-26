@@ -1,5 +1,6 @@
-package br.com.gilberto.sgv.domain;
+package br.com.gilberto.sgv.domain.institution;
 
+import br.com.gilberto.sgv.domain.address.Address;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,14 +8,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class Institution {
 
     private Long id;
     private String name;
-    private String phone;
-    private String cpf;
-    private String email;
-    private String password;
-    private Role role;
     private Address address;
 }
