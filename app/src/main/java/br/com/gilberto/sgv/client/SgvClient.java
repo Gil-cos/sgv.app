@@ -16,7 +16,7 @@ public interface SgvClient {
     Call<User> createUser(@Body User user);
 
     @PUT("/users/update")
-    Call<User> updateUser(@Body User user);
+    Call<User> updateUser(@Header("Authorization") String authorization, @Body User user);
 
     @POST("/api/auth")
     Call<TokenDto> login(@Body LoginWrapper loginWrapper);

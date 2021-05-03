@@ -1,5 +1,6 @@
 package br.com.gilberto.sgv.domain.user.driver;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DriverInfo {
+public class DriverInfo implements Serializable {
 
     private Long id;
     private Vehicle vehicle;

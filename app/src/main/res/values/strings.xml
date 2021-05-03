@@ -34,9 +34,11 @@
     <string name="user_register">Usuário Cadastrado</string>
     <string name="cep">CEP</string>
     <string name="number">Número</string>
-    <string name="address">Endereço:</string>
+    <string name="address">Endereço</string>
     <string name="neighborhood">Bairro</string>
     <string name="city">Cidade</string>
     <string name="street">Rua</string>
     <string name="save">Salvar</string>
+    <string name="updatedUser">Dados Atualizados</string>
+    <string name="updateUserError">Erro ao atualizar dados</string>
 </resources>

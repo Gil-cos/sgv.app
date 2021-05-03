@@ -2,6 +2,8 @@ package br.com.gilberto.sgv.domain.user;
 
 import android.text.Editable;
 
+import java.io.Serializable;
+
 import br.com.gilberto.sgv.domain.address.Address;
 import br.com.gilberto.sgv.domain.user.driver.DriverInfo;
 import br.com.gilberto.sgv.domain.user.passenger.PassengerInfo;
@@ -12,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class User implements Serializable {
 
     private Long id;
     private String name;
@@ -36,10 +38,20 @@ public class User {
         this.role = role;
     }
 
-    public User update(final String name, final String cpf, final String cep, final String number, final String city, final String street, final String neighborhood) {
-        this.name = name;
-        this.cpf = cpf;
-        this.address.update(cep, number, city, street, neighborhood);
+    public User update(final String cep, final String number, final String city, final String street, final String neighborhood) {
+        updateAddress(new Address(cep, number, city, street, neighborhood));
         return this;
+    }
+
+    private void updateAddress(final Address address) {
+        if (this.address != null) {
+            this.address.update(address);
+        } else {
+            this.address = address;
+        }
+    }
+
+    public boolean isDriver() {
+        return role.equals(Role.DRIVER) ? true : false;
     }
 }

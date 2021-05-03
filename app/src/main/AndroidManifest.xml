@@ -14,10 +14,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Sgvapp"
         android:usesCleartextTraffic="true">
+        <activity android:name=".activity.AddressActivity"></activity>
         <activity
             android:name=".activity.UserActivity"
             android:label="@string/title_activity_user"
-            android:theme="@style/Theme.Sgvapp.NoActionBar"></activity>
+            android:theme="@style/Theme.Sgvapp.NoActionBar" />
         <activity android:name=".activity.LoginActivity" />
         <activity android:name=".activity.RegisterActivity" />
         <activity
