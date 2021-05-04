@@ -16,5 +16,12 @@ public class DriverInfo implements Serializable {
 
     private Long id;
     private Vehicle vehicle;
-    private final Set<Route> routes = new HashSet<>();
+
+    public DriverInfo(final Vehicle vehicle) {
+        this.vehicle = vehicle;
+    }
+
+    public void update(final DriverInfo driverInfo) {
+        this.vehicle.update(driverInfo.getVehicle());
+    }
 }

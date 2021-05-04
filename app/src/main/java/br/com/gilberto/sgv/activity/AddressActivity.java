@@ -6,13 +6,11 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 
 import br.com.gilberto.sgv.R;
-import br.com.gilberto.sgv.activity.ui.userInfo.UserInfoViewModel;
 import br.com.gilberto.sgv.client.CepClient;
 import br.com.gilberto.sgv.client.SgvClient;
 import br.com.gilberto.sgv.domain.address.Address;
@@ -27,7 +25,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AddressActivity extends AppCompatActivity {
 
-    private UserInfoViewModel userInfoViewModel;
     private Retrofit retrofit;
     private SgvClient sgvClient;
     private CepClient cepClient;
@@ -53,12 +50,12 @@ public class AddressActivity extends AppCompatActivity {
                 .build();
         cepClient = retrofit.create(CepClient.class);
 
-        cep = findViewById(R.id.userInfoCep);
-        number = findViewById(R.id.userInfoNumber);
-        city = findViewById(R.id.userInfoCity);
+        cep = findViewById(R.id.brandEditText);
+        number = findViewById(R.id.modelEditText);
+        city = findViewById(R.id.licensePlateEditText);
         street = findViewById(R.id.userInfoStreet);
-        neighborhood = findViewById(R.id.userInfoNeighborhood);
-        saveBtn = findViewById(R.id.buttonUpdateUserInfo);
+        neighborhood = findViewById(R.id.numberOfSeatsEditText);
+        saveBtn = findViewById(R.id.buttonUpdateVehicle);
 
         final Bundle data = getIntent().getExtras();
         user = (User) data.getSerializable("user");

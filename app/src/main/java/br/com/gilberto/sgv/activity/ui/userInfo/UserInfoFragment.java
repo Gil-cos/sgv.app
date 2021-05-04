@@ -22,6 +22,7 @@ import androidx.lifecycle.ViewModelProvider;
 import br.com.gilberto.sgv.R;
 import br.com.gilberto.sgv.activity.AddressActivity;
 import br.com.gilberto.sgv.activity.UserActivity;
+import br.com.gilberto.sgv.activity.VehicleActivity;
 import br.com.gilberto.sgv.client.CepClient;
 import br.com.gilberto.sgv.client.SgvClient;
 import br.com.gilberto.sgv.domain.address.Address;
@@ -90,6 +91,10 @@ public class UserInfoFragment extends Fragment {
             editAddress();
         });
 
+        editVehicleBtn.setOnClickListener(v -> {
+            editVehicle();
+        });
+
         userInfoViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
@@ -100,6 +105,12 @@ public class UserInfoFragment extends Fragment {
 
     private void editAddress() {
         Intent intent = new Intent(this.getActivity(), AddressActivity.class);
+        intent.putExtra("user", user);
+        startActivity(intent);
+    }
+
+    private void editVehicle() {
+        Intent intent = new Intent(this.getActivity(), VehicleActivity.class);
         intent.putExtra("user", user);
         startActivity(intent);
     }

@@ -3,9 +3,12 @@ package br.com.gilberto.sgv.domain.user;
 import android.text.Editable;
 
 import java.io.Serializable;
+import java.io.StringReader;
+import java.sql.Driver;
 
 import br.com.gilberto.sgv.domain.address.Address;
 import br.com.gilberto.sgv.domain.user.driver.DriverInfo;
+import br.com.gilberto.sgv.domain.user.driver.Vehicle;
 import br.com.gilberto.sgv.domain.user.passenger.PassengerInfo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -43,11 +46,24 @@ public class User implements Serializable {
         return this;
     }
 
+    public User update(final String brand, final String model, final String licensePlate, final Integer numberOfSeats) {
+        updateDriverInfo(new DriverInfo(new Vehicle(brand, model, licensePlate, numberOfSeats)));
+        return this;
+    }
+
     private void updateAddress(final Address address) {
         if (this.address != null) {
             this.address.update(address);
         } else {
             this.address = address;
+        }
+    }
+
+    private void updateDriverInfo(final DriverInfo driverInfo) {
+        if (this.driverInfo != null) {
+            this.driverInfo.update(driverInfo);
+        } else {
+            this.driverInfo = driverInfo;
         }
     }
 

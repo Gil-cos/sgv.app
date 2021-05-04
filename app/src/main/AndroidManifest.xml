@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Sgvapp"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.AddressActivity"></activity>
+        <activity android:name=".activity.VehicleActivity"></activity>
+        <activity android:name=".activity.AddressActivity" />
         <activity
             android:name=".activity.UserActivity"
             android:label="@string/title_activity_user"

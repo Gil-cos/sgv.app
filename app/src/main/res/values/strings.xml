@@ -41,4 +41,11 @@
     <string name="save">Salvar</string>
     <string name="updatedUser">Dados Atualizados</string>
     <string name="updateUserError">Erro ao atualizar dados</string>
+    <string name="vehicle">Veículo</string>
+    <string name="brand">Marca</string>
+    <string name="model">Modelo</string>
+    <string name="license_plate">Número da Placa</string>
+    <string name="number_of_seats">Número de Assentos</string>
+    <string name="updatedVehicle">Veículo atualizado</string>
+    <string name="updatedVehicleError">Erro ao atualizar o veículo</string>
 </resources>
