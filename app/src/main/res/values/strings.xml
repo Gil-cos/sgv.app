@@ -19,6 +19,7 @@
     <string name="invalid_form">Formulario Invalido</string>
     <string name="login_error">Erro ao logar</string>
     <string name="authenticationInfo">authenticationInfo</string>
+    <string name="user_id">userId</string>
     <string name="token">token</string>
     <string name="title_activity_user">UserActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -28,7 +29,7 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
-    <string name="menu_home">Home</string>
+    <string name="menu_home">Rotas</string>
     <string name="menu_user_info">Perfil</string>
     <string name="menu_slideshow">Slideshow</string>
     <string name="user_register">Usuário Cadastrado</string>
@@ -47,5 +48,10 @@
     <string name="license_plate">Número da Placa</string>
     <string name="number_of_seats">Número de Assentos</string>
     <string name="updatedVehicle">Veículo atualizado</string>
+    <string name="route_crated">Rota criada</string>
+    <string name="crate_route_error">Erro ao criar a rota</string>
     <string name="updatedVehicleError">Erro ao atualizar o veículo</string>
+    <string name="institution">Instituição</string>
+    <string name="noturnal">Noturno</string>
+    <string name="day_time">Diurno</string>
 </resources>

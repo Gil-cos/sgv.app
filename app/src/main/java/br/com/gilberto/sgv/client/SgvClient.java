@@ -1,5 +1,6 @@
 package br.com.gilberto.sgv.client;
 
+import br.com.gilberto.sgv.domain.route.Route;
 import br.com.gilberto.sgv.domain.user.User;
 import br.com.gilberto.sgv.dto.TokenDto;
 import br.com.gilberto.sgv.wrapper.LoginWrapper;
@@ -23,4 +24,7 @@ public interface SgvClient {
 
     @GET("/users/me")
     Call<User> getUserInfo(@Header("Authorization") String authorization);
+
+    @POST("/routes/create")
+    Call<Route> createRoute(@Header("Authorization") String authorization, @Body Route route);
 }
