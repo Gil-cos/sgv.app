@@ -22,7 +22,7 @@ public class Route {
     private String description;
     private Period period;
     private User driver;
-    private final Set<PassengerInfo> passengers = new HashSet<>();
+    private final Set<User> passengers = new HashSet<>();
     private Institution institution;
 
 

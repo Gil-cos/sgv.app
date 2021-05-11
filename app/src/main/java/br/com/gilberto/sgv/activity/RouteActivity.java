@@ -163,7 +163,7 @@ public class RouteActivity extends AppCompatActivity {
     }
 
     private Period getPeriod() {
-        return dayTime.isActivated() ? Period.DAYTIME : Period.NOCTURNAL;
+        return dayTime.isChecked() ? Period.DAYTIME : Period.NOCTURNAL;
     }
 
     private void setRouteValues(final Address address) {

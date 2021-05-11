@@ -1,5 +1,7 @@
 package br.com.gilberto.sgv.client;
 
+import java.util.List;
+
 import br.com.gilberto.sgv.domain.route.Route;
 import br.com.gilberto.sgv.domain.user.User;
 import br.com.gilberto.sgv.dto.TokenDto;
@@ -10,6 +12,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Query;
 
 public interface SgvClient {
 
@@ -27,4 +30,7 @@ public interface SgvClient {
 
     @POST("/routes/create")
     Call<Route> createRoute(@Header("Authorization") String authorization, @Body Route route);
+
+    @GET("/routes/pages")
+    Call<List<Route>> getRoutes(@Header("Authorization") String authorization, @Query("driver") Long driver);
 }
