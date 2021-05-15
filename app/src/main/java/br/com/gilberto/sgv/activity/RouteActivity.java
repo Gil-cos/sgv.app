@@ -20,6 +20,7 @@ import br.com.gilberto.sgv.domain.route.Period;
 import br.com.gilberto.sgv.domain.route.Route;
 import br.com.gilberto.sgv.domain.user.User;
 import br.com.gilberto.sgv.dto.CepDto;
+import br.com.gilberto.sgv.util.RetrofitClientsUtils;
 import br.com.gilberto.sgv.util.SharedPreferencesUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,22 +30,19 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RouteActivity extends AppCompatActivity {
 
-    private Retrofit retrofit;
-    private SgvClient sgvClient;
-    private CepClient cepClient;
+    private RetrofitClientsUtils retrofitClientsUtils = new RetrofitClientsUtils();
+    private SgvClient sgvClient = retrofitClientsUtils.createSgvClient();
+    private CepClient cepClient = retrofitClientsUtils.createCepClient();
     private SharedPreferencesUtils preferencesUtils = new SharedPreferencesUtils();
     private TextInputEditText routeName, cep, street, number, neighborhood, city, institutionName;
     private RadioButton dayTime, nocturnal;
     private Button saveBtn;
-    private Route route;
     private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route);
-
-        createClients();
 
         final Bundle data = getIntent().getExtras();
         user = (User) data.getSerializable("user");
@@ -102,20 +100,6 @@ public class RouteActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-    private void createClients() {
-        retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:8090")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        sgvClient = retrofit.create(SgvClient.class);
-
-        retrofit = new Retrofit.Builder()
-                .baseUrl("https://viacep.com.br/ws/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        cepClient = retrofit.create(CepClient.class);
     }
 
     private void createRoute() {

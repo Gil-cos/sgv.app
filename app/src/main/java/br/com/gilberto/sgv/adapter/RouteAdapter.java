@@ -1,7 +1,7 @@
 package br.com.gilberto.sgv.adapter;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import br.com.gilberto.sgv.R;
+import br.com.gilberto.sgv.activity.RouteDetailsActivity;
 import br.com.gilberto.sgv.domain.address.Address;
 import br.com.gilberto.sgv.domain.institution.Institution;
 import br.com.gilberto.sgv.domain.route.Period;
@@ -43,6 +44,7 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.MyViewHolder
         Institution institution = route.getInstitution();
         Address address = institution.getAddress();
 
+        holder.id.setText(route.getId().toString());
         holder.description.setText(route.getDescription());
         holder.institution.setText(institution.getName());
         holder.period.setText(route.getPeriod().getPrettyName());
@@ -63,12 +65,13 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.MyViewHolder
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView description, period, institution, street, cep, neighborhood;
+        TextView id, description, period, institution, street, cep, neighborhood;
         ImageView periodImage;
 
         public MyViewHolder(View itemView) {
             super(itemView);
 
+            id = itemView.findViewById(R.id.routeAdapterId);
             description = itemView.findViewById(R.id.routeAdapterDescription);
             institution = itemView.findViewById(R.id.routeAdapterInstitution);
             period = itemView.findViewById(R.id.routeAdapterPeriod);
@@ -76,6 +79,15 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.MyViewHolder
             cep = itemView.findViewById(R.id.routeAdapterAddressCep);
             neighborhood = itemView.findViewById(R.id.routeAdapterAddressNeighborhood);
             periodImage = itemView.findViewById(R.id.imageViewPeriod);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, RouteDetailsActivity.class);
+                    intent.putExtra("routeId", Long.parseLong(id.getText().toString()));
+                    context.startActivity(intent);
+                }
+            });
 
         }
 

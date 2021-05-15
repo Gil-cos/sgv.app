@@ -17,6 +17,7 @@ import com.basgeekball.awesomevalidation.utility.RegexTemplate;
 import br.com.gilberto.sgv.R;
 import br.com.gilberto.sgv.client.SgvClient;
 import br.com.gilberto.sgv.dto.TokenDto;
+import br.com.gilberto.sgv.util.RetrofitClientsUtils;
 import br.com.gilberto.sgv.util.SharedPreferencesUtils;
 import br.com.gilberto.sgv.wrapper.LoginWrapper;
 import retrofit2.Call;
@@ -30,8 +31,8 @@ public class LoginActivity extends AppCompatActivity {
     private EditText email, password;
     private Button loginBtn;
     private AwesomeValidation awesomeValidation;
-    private Retrofit retrofit;
-    private SgvClient sgvClient;
+    private RetrofitClientsUtils retrofitClientsUtils = new RetrofitClientsUtils();
+    private SgvClient sgvClient = retrofitClientsUtils.createSgvClient();
     private SharedPreferencesUtils preferencesUtils = new SharedPreferencesUtils();
 
     @Override
@@ -45,12 +46,6 @@ public class LoginActivity extends AppCompatActivity {
 
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
         addFormValidations();
-
-        retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:8090")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        sgvClient = retrofit.create(SgvClient.class);
 
         loginBtn.setOnClickListener(v -> {
             if (awesomeValidation.validate()) {

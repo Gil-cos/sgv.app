@@ -24,6 +24,7 @@ import br.com.gilberto.sgv.R;
 import br.com.gilberto.sgv.client.CepClient;
 import br.com.gilberto.sgv.client.SgvClient;
 import br.com.gilberto.sgv.domain.user.User;
+import br.com.gilberto.sgv.util.RetrofitClientsUtils;
 import br.com.gilberto.sgv.util.SharedPreferencesUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,8 +35,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class UserActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
-    private Retrofit retrofit;
-    private SgvClient sgvClient;
+    private RetrofitClientsUtils retrofitClientsUtils = new RetrofitClientsUtils();
+    private SgvClient sgvClient = retrofitClientsUtils.createSgvClient();
     private TextView name, email;
     private SharedPreferencesUtils preferencesUtils = new SharedPreferencesUtils();
 
@@ -59,14 +60,8 @@ public class UserActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
         View headerView = navigationView.getHeaderView(0);
-        name = (TextView) headerView.findViewById(R.id.navUsername);
-        email = (TextView) headerView.findViewById(R.id.navEmail);
-
-        retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:8090")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        sgvClient = retrofit.create(SgvClient.class);
+        name =  headerView.findViewById(R.id.navUsername);
+        email = headerView.findViewById(R.id.navEmail);
 
         getUserInfo();
     }

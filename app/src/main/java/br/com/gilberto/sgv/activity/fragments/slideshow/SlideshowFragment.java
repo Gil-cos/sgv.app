@@ -1,4 +1,4 @@
-package br.com.gilberto.sgv.activity.ui.slideshow;
+package br.com.gilberto.sgv.activity.fragments.slideshow;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

@@ -16,6 +16,7 @@ import br.com.gilberto.sgv.client.SgvClient;
 import br.com.gilberto.sgv.domain.address.Address;
 import br.com.gilberto.sgv.domain.user.User;
 import br.com.gilberto.sgv.dto.CepDto;
+import br.com.gilberto.sgv.util.RetrofitClientsUtils;
 import br.com.gilberto.sgv.util.SharedPreferencesUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -25,9 +26,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AddressActivity extends AppCompatActivity {
 
-    private Retrofit retrofit;
-    private SgvClient sgvClient;
-    private CepClient cepClient;
+    private RetrofitClientsUtils retrofitClientsUtils = new RetrofitClientsUtils();
+    private SgvClient sgvClient = retrofitClientsUtils.createSgvClient();
+    private CepClient cepClient = retrofitClientsUtils.createCepClient();
     private SharedPreferencesUtils preferencesUtils = new SharedPreferencesUtils();
     private TextInputEditText cep, number, city, street, neighborhood;
     private Button saveBtn;
@@ -37,18 +38,6 @@ public class AddressActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_address);
-
-        retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:8090")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        sgvClient = retrofit.create(SgvClient.class);
-
-        retrofit = new Retrofit.Builder()
-                .baseUrl("https://viacep.com.br/ws/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        cepClient = retrofit.create(CepClient.class);
 
         cep = findViewById(R.id.brandEditText);
         number = findViewById(R.id.modelEditText);

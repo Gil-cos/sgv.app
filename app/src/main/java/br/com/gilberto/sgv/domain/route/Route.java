@@ -1,5 +1,6 @@
 package br.com.gilberto.sgv.domain.route;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,13 +17,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Route {
+public class Route implements Serializable {
 
     private Long id;
     private String description;
     private Period period;
     private User driver;
-    private final Set<User> passengers = new HashSet<>();
     private Institution institution;
 
 

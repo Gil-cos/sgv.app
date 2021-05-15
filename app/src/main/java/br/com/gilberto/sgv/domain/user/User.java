@@ -1,10 +1,6 @@
 package br.com.gilberto.sgv.domain.user;
 
-import android.text.Editable;
-
 import java.io.Serializable;
-import java.io.StringReader;
-import java.sql.Driver;
 
 import br.com.gilberto.sgv.domain.address.Address;
 import br.com.gilberto.sgv.domain.user.driver.DriverInfo;

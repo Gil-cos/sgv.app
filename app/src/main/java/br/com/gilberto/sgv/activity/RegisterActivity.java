@@ -18,6 +18,7 @@ import br.com.gilberto.sgv.R;
 import br.com.gilberto.sgv.client.SgvClient;
 import br.com.gilberto.sgv.domain.user.Role;
 import br.com.gilberto.sgv.domain.user.User;
+import br.com.gilberto.sgv.util.RetrofitClientsUtils;
 import br.com.gilberto.sgv.util.SharedPreferencesUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -31,8 +32,8 @@ public class RegisterActivity extends AppCompatActivity {
     private Button registerBtn;
     private RadioButton passanger, driver;
     private AwesomeValidation awesomeValidation;
-    private Retrofit retrofit;
-    private SgvClient sgvClient;
+    private RetrofitClientsUtils retrofitClientsUtils = new RetrofitClientsUtils();
+    private SgvClient sgvClient = retrofitClientsUtils.createSgvClient();
     private SharedPreferencesUtils preferencesUtils = new SharedPreferencesUtils();
 
     @Override
@@ -51,12 +52,6 @@ public class RegisterActivity extends AppCompatActivity {
 
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
         addFormValidations();
-
-        retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:8090")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        sgvClient = retrofit.create(SgvClient.class);
 
         registerBtn.setOnClickListener(v -> {
             if (awesomeValidation.validate()) {

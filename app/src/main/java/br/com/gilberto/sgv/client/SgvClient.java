@@ -12,6 +12,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface SgvClient {
@@ -33,4 +34,7 @@ public interface SgvClient {
 
     @GET("/routes/pages")
     Call<List<Route>> getRoutes(@Header("Authorization") String authorization, @Query("driver") Long driver);
+
+    @GET("/routes/{id}")
+    Call<Route> getRoute(@Header("Authorization") String authorization, @Path("id") Long id);
 }

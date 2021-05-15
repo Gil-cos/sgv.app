@@ -27,6 +27,14 @@
                 android:textColor="@android:color/black"
                 android:textSize="16sp" />
 
+            <TextView
+                android:id="@+id/routeAdapterId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="19"
+                android:text="TextView"
+                android:visibility="gone" />
+
             <ImageView
                 android:id="@+id/imageViewPeriod"
                 android:layout_width="wrap_content"
@@ -40,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="end"
-                android:text="Periodo"
+                android:text="@string/period"
                 android:textColor="#00D39E"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -52,7 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="5"
-            android:text="@string/address"
+            android:text="@string/institution"
             android:textColor="#696969"
             android:textSize="14sp" />
 

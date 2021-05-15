@@ -14,6 +14,7 @@ import br.com.gilberto.sgv.domain.address.Address;
 import br.com.gilberto.sgv.domain.user.User;
 import br.com.gilberto.sgv.domain.user.driver.DriverInfo;
 import br.com.gilberto.sgv.domain.user.driver.Vehicle;
+import br.com.gilberto.sgv.util.RetrofitClientsUtils;
 import br.com.gilberto.sgv.util.SharedPreferencesUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -23,8 +24,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class VehicleActivity extends AppCompatActivity {
 
-    private Retrofit retrofit;
-    private SgvClient sgvClient;
+    private RetrofitClientsUtils retrofitClientsUtils = new RetrofitClientsUtils();
+    private SgvClient sgvClient = retrofitClientsUtils.createSgvClient();
     private SharedPreferencesUtils preferencesUtils = new SharedPreferencesUtils();
     private TextInputEditText brand, model, licensePlate, numberOfSeats;
     private Button saveBtn;
@@ -34,12 +35,6 @@ public class VehicleActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vehicle);
-
-        retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:8090")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        sgvClient = retrofit.create(SgvClient.class);
 
         brand = findViewById(R.id.brandEditText);
         model = findViewById(R.id.modelEditText);
