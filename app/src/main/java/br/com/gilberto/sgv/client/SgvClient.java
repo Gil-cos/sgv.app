@@ -17,17 +17,20 @@ import retrofit2.http.Query;
 
 public interface SgvClient {
 
+    @POST("/api/auth")
+    Call<TokenDto> login(@Body LoginWrapper loginWrapper);
+
     @POST("/users/create")
     Call<User> createUser(@Body User user);
 
     @PUT("/users/update")
     Call<User> updateUser(@Header("Authorization") String authorization, @Body User user);
 
-    @POST("/api/auth")
-    Call<TokenDto> login(@Body LoginWrapper loginWrapper);
-
     @GET("/users/me")
     Call<User> getUserInfo(@Header("Authorization") String authorization);
+
+    @GET("/users/pages")
+    Call<List<User>> getPassengersByFilter(@Header("Authorization") String authorization, @Query("name") String name);
 
     @POST("/routes/create")
     Call<Route> createRoute(@Header("Authorization") String authorization, @Body Route route);
@@ -37,4 +40,14 @@ public interface SgvClient {
 
     @GET("/routes/{id}")
     Call<Route> getRoute(@Header("Authorization") String authorization, @Path("id") Long id);
+
+    @GET("/routes/passengers/{id}")
+    Call<List<User>> getPassengers(@Header("Authorization") String authorization, @Path("id") Long id);
+
+    @PUT("/routes/{routeId}/passengers/add/{passengerId}")
+    Call<Route> addPassenger(@Header("Authorization") String authorization, @Path("routeId") Long routeId, @Path("passengerId") Long passengerId);
+
+    @PUT("/routes/{routeId}/passengers/remove/{passengerId}")
+    Call<Route> removePassenger(@Header("Authorization") String authorization, @Path("routeId") Long routeId, @Path("passengerId") Long passengerId);
+
 }

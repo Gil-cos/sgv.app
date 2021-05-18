@@ -5,20 +5,16 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 
-import java.util.List;
-
 import br.com.gilberto.sgv.R;
 import br.com.gilberto.sgv.activity.fragments.home.RouteInfoFragment;
-import br.com.gilberto.sgv.activity.fragments.home.RoutePassangersFragment;
+import br.com.gilberto.sgv.activity.fragments.home.RoutePassengersFragment;
 import br.com.gilberto.sgv.client.SgvClient;
 import br.com.gilberto.sgv.domain.route.Route;
-import br.com.gilberto.sgv.domain.user.User;
 import br.com.gilberto.sgv.util.RetrofitClientsUtils;
 import br.com.gilberto.sgv.util.SharedPreferencesUtils;
 import retrofit2.Call;
@@ -64,7 +60,7 @@ public class RouteDetailsActivity extends AppCompatActivity {
                             getSupportFragmentManager(),
                             FragmentPagerItems.with(getApplicationContext())
                                     .add(R.string.route_info, RouteInfoFragment.class, data)
-                                    .add(R.string.passangers, RoutePassangersFragment.class, data)
+                                    .add(R.string.passangers, RoutePassengersFragment.class, data)
                                     .create()
                     );
 

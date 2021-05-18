@@ -36,6 +36,17 @@ public class RouteInfoFragment extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_route_info, container, false);
 
+        Bundle data = getArguments();
+        route = (Route) data.getSerializable("route");
+        final User driver = route.getDriver();
+        final Institution institution = route.getInstitution();
+
+        setRouteInfo(root, driver, institution);
+
+        return root;
+    }
+
+    private void setRouteInfo(View root, final User driver, final Institution institution) {
         routeDescription = root.findViewById(R.id.routeInfoDescription);
         driverName = root.findViewById(R.id.routeInfoDriverName);
         driverPhone = root.findViewById(R.id.routeInfoDriverPhone);
@@ -56,11 +67,6 @@ public class RouteInfoFragment extends Fragment {
         institutionCep = root.findViewById(R.id.routeInfoInstitutionCep);
         institutionCity = root.findViewById(R.id.routeInfoInstitutionCity);
 
-        Bundle data = getArguments();
-        route = (Route) data.getSerializable("route");
-        final User driver = route.getDriver();
-        final Institution institution = route.getInstitution();
-
         routeDescription.setText(route.getDescription());
         driverName.setText(driver.getName());
         driverPhone.setText(driver.getPhone());
@@ -80,7 +86,5 @@ public class RouteInfoFragment extends Fragment {
         institutionNeighborhood.setText(institution.getAddress().getNeighborhood());
         institutionCep.setText(institution.getAddress().getCep());
         institutionCity.setText(institution.getAddress().getCity());
-
-        return root;
     }
 }

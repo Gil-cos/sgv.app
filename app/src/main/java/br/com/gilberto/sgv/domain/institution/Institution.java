@@ -1,5 +1,7 @@
 package br.com.gilberto.sgv.domain.institution;
 
+import java.io.Serializable;
+
 import br.com.gilberto.sgv.domain.address.Address;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Institution {
+public class Institution implements Serializable {
 
     private Long id;
     private String name;

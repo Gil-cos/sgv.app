@@ -1,8 +1,11 @@
 package br.com.gilberto.sgv.domain.user;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import br.com.gilberto.sgv.domain.address.Address;
+import br.com.gilberto.sgv.domain.route.Route;
 import br.com.gilberto.sgv.domain.user.driver.DriverInfo;
 import br.com.gilberto.sgv.domain.user.driver.Vehicle;
 import br.com.gilberto.sgv.domain.user.passenger.PassengerInfo;
@@ -25,6 +28,7 @@ public class User implements Serializable {
     private Address address;
     private PassengerInfo passengerInfo;
     private DriverInfo driverInfo;
+    private List<Route> routes = new ArrayList<>();
 
 
     public User(final String name, final String phone, final String cpf, final String email, final String password,
