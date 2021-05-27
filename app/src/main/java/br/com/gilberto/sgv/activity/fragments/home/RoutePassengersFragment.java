@@ -1,6 +1,7 @@
 package br.com.gilberto.sgv.activity.fragments.home;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -26,6 +27,7 @@ import br.com.gilberto.sgv.adapter.PassengerAdapter;
 import br.com.gilberto.sgv.adapter.RouteAdapter;
 import br.com.gilberto.sgv.client.SgvClient;
 import br.com.gilberto.sgv.domain.route.Route;
+import br.com.gilberto.sgv.domain.user.Role;
 import br.com.gilberto.sgv.domain.user.User;
 import br.com.gilberto.sgv.util.RetrofitClientsUtils;
 import br.com.gilberto.sgv.util.SharedPreferencesUtils;
@@ -42,6 +44,7 @@ public class RoutePassengersFragment extends Fragment {
     private PassengerAdapter passengerAdapter;
     private RecyclerView recyclerView;
     private Route route;
+    private Role role;
 
     public RoutePassengersFragment() {
         // Required empty public constructor
@@ -68,11 +71,17 @@ public class RoutePassengersFragment extends Fragment {
             }
         });
 
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(getString(R.string.authenticationInfo), 0);
+        role = Role.valueOf(preferencesUtils.retrieveUserRole(sharedPreferences));
         Bundle data = getArguments();
         route = (Route) data.getSerializable("route");
 
+        if (role.equals(Role.PASSENGER)) {
+            fab.setVisibility(View.GONE);
+        }
+
         recyclerView = root.findViewById(R.id.passengersRecyclerView);
-        passengerAdapter = new PassengerAdapter(route.getId(), passengers, this.getContext());
+        passengerAdapter = new PassengerAdapter(route.getId(), role, passengers, this.getContext());
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         recyclerView.setLayoutManager( layoutManager );
         recyclerView.setHasFixedSize(true);

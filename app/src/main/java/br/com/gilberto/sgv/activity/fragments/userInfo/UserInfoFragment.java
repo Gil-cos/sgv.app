@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -32,7 +33,7 @@ public class UserInfoFragment extends Fragment {
     private SgvClient sgvClient = retrofitClientsUtils.createSgvClient();
     private SharedPreferencesUtils preferencesUtils = new SharedPreferencesUtils();
     private TextView name, email, phone, vehicle;
-    private ImageButton editAddressBtn, editVehicleBtn;
+    private ImageView editAddressBtn, editVehicleBtn;
     private User user;
 
     public View onCreateView(@NonNull LayoutInflater inflater,

@@ -5,10 +5,11 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum Period {
+public enum RouteStatus {
 
-    DAYTIME("Diurno"),
-    NOCTURNAL("Noturno");
+    STAND_BY("Parado"),
+    PREPARING("Em Preparação"),
+    TRAVELING("Em Viagem");
 
     private final String prettyName;
 }

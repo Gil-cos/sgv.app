@@ -3,6 +3,7 @@ package br.com.gilberto.sgv.client;
 import java.util.List;
 
 import br.com.gilberto.sgv.domain.route.Route;
+import br.com.gilberto.sgv.domain.route.RouteStatus;
 import br.com.gilberto.sgv.domain.user.User;
 import br.com.gilberto.sgv.dto.TokenDto;
 import br.com.gilberto.sgv.wrapper.LoginWrapper;
@@ -35,8 +36,8 @@ public interface SgvClient {
     @POST("/routes/create")
     Call<Route> createRoute(@Header("Authorization") String authorization, @Body Route route);
 
-    @GET("/routes/pages")
-    Call<List<Route>> getRoutes(@Header("Authorization") String authorization, @Query("driver") Long driver);
+    @GET("/routes/{userId}/user")
+    Call<List<Route>> getRoutes(@Header("Authorization") String authorization, @Path("userId") Long userId);
 
     @GET("/routes/{id}")
     Call<Route> getRoute(@Header("Authorization") String authorization, @Path("id") Long id);
@@ -49,5 +50,8 @@ public interface SgvClient {
 
     @PUT("/routes/{routeId}/passengers/remove/{passengerId}")
     Call<Route> removePassenger(@Header("Authorization") String authorization, @Path("routeId") Long routeId, @Path("passengerId") Long passengerId);
+
+    @PUT("/routes/{id}/status/{status}")
+    Call<Route> changeStatus(@Header("Authorization") String authorization, @Path("id") Long id, @Path("status") RouteStatus status);
 
 }

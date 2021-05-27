@@ -42,6 +42,7 @@ public class HomeFragment extends Fragment {
     private RouteAdapter routeAdapter;
     private HomeViewModel homeViewModel;
     private RecyclerView recyclerView;
+    private FloatingActionButton fab;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -51,7 +52,7 @@ public class HomeFragment extends Fragment {
 
         userId = preferencesUtils.retrieveUserId(this.getActivity().getSharedPreferences(getString(R.string.authenticationInfo), 0));
 
-        FloatingActionButton fab = root.findViewById(R.id.fab);
+        fab = root.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -61,6 +62,8 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+
 
         recyclerView = root.findViewById(R.id.routesRecyclerView);
         routeAdapter = new RouteAdapter(routes,this.getContext());
@@ -98,6 +101,9 @@ public class HomeFragment extends Fragment {
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful()) {
                     user = response.body();
+                    if (user.isPassenger()) {
+                        fab.setVisibility(View.GONE);
+                    }
                 }
             }
 
@@ -113,5 +119,6 @@ public class HomeFragment extends Fragment {
         super.onResume();
         getRoutes();
         getUser();
+
     }
 }

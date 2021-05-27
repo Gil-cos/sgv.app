@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">sgv.app</string>
+    <string name="app_name">SGV</string>
     <string name="invalid_name">Preencha o nome.</string>
     <string name="invalid_email">Email invalido</string>
     <string name="invalid_password">Preencha a Senha</string>
@@ -37,6 +37,7 @@
     <string name="number">Número: </string>
     <string name="number_abbreviate">Nº: </string>
     <string name="address">Endereço: </string>
+    <string name="address_title">Endereço</string>
     <string name="neighborhood">Bairro: </string>
     <string name="city">Cidade: </string>
     <string name="street">Rua: </string>
@@ -44,6 +45,9 @@
     <string name="updatedUser">Dados Atualizados</string>
     <string name="updateUserError">Erro ao atualizar dados</string>
     <string name="vehicle">Veículo</string>
+    <string name="vehicle_title">Veículo</string>
+    <string name="route_title">Cadastro Rota</string>
+    <string name="route_details">Rota - Detalhes</string>
     <string name="brand">Marca: </string>
     <string name="model">Modelo: </string>
     <string name="license_plate">Número da Placa: </string>
@@ -63,11 +67,19 @@
     <string name="tab_text_2">Tab 2</string>
     <string name="route_info">Informações</string>
     <string name="passangers">Passageiros</string>
+    <string name="passanger_list">Adicionar Passageiro</string>
     <string name="description">Descrição</string>
     <string name="passenger_added">Passageiro Adicionado</string>
     <string name="want_to_add_passenger">Deseja adicionar o Passageiro </string>
     <string name="add_passenger">Adicionar Passageiro</string>
+    <string name="change_route_status">Mudar Status da Rota</string>
     <string name="passenger_removed">Passageiro Removido</string>
     <string name="remove_passenger">Remover Passageiro</string>
     <string name="want_to_remove_passenger">Deseja remover o Passageiro </string>
+    <string name="default_notification_channel_id">fcm_default_channel</string>
+    <string name="initiate_preparation">Iniciar Preparação</string>
+    <string name="initiate_travel">Iniciar Viagem</string>
+    <string name="finish_travel">Terminar Viagem</string>
+    <string name="status">Status</string>
+    <string name="status_title">Status:</string>
 </resources>

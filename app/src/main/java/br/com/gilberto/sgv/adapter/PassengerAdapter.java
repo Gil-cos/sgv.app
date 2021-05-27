@@ -23,6 +23,7 @@ import br.com.gilberto.sgv.client.SgvClient;
 import br.com.gilberto.sgv.domain.address.Address;
 import br.com.gilberto.sgv.domain.route.Period;
 import br.com.gilberto.sgv.domain.route.Route;
+import br.com.gilberto.sgv.domain.user.Role;
 import br.com.gilberto.sgv.domain.user.User;
 import br.com.gilberto.sgv.util.RetrofitClientsUtils;
 import br.com.gilberto.sgv.util.SharedPreferencesUtils;
@@ -37,13 +38,15 @@ public class PassengerAdapter extends RecyclerView.Adapter<PassengerAdapter.MyVi
     private SgvClient sgvClient = retrofitClientsUtils.createSgvClient();
     private SharedPreferencesUtils preferencesUtils = new SharedPreferencesUtils();
     private Long routeId;
+    private Role role;
     private List<User> passengers;
     private Context context;
 
-    public PassengerAdapter(Long routeId, List<User> passengers, Context context) {
+    public PassengerAdapter(Long routeId, Role role, List<User> passengers, Context context) {
         this.routeId = routeId;
         this.passengers = passengers;
         this.context = context;
+        this.role = role;
     }
 
     @NonNull
@@ -95,49 +98,52 @@ public class PassengerAdapter extends RecyclerView.Adapter<PassengerAdapter.MyVi
             thumbDown = itemView.findViewById(R.id.imageViewThumbDown);
             thumbUp = itemView.findViewById(R.id.imageViewThumbUp);
 
+            if (role.equals(Role.PASSENGER)) {
+                delete.setVisibility(View.GONE);
+            } else {
+                delete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(v.getRootView().getContext());
 
-            delete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(v.getRootView().getContext());
+                        dialog.setTitle(R.string.remove_passenger);
+                        dialog.setMessage(context.getString(R.string.want_to_remove_passenger) + " " + name.getText().toString() + "?");
 
-                    dialog.setTitle(R.string.remove_passenger);
-                    dialog.setMessage(context.getString(R.string.want_to_remove_passenger) + " " + name.getText().toString() + "?");
+                        dialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Call<Route> routeCall = sgvClient.removePassenger(preferencesUtils.retrieveToken(context.getSharedPreferences(context.getString(R.string.authenticationInfo), 0)),
+                                        routeId, Long.parseLong(id.getText().toString()));
 
-                    dialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Call<Route> routeCall = sgvClient.removePassenger(preferencesUtils.retrieveToken(context.getSharedPreferences(context.getString(R.string.authenticationInfo), 0)),
-                                    routeId, Long.parseLong(id.getText().toString()));
-
-                            routeCall.enqueue(new Callback<Route>() {
-                                @SneakyThrows
-                                @Override
-                                public void onResponse(Call<Route> call, Response<Route> response) {
-                                    if (response.isSuccessful()) {
-                                        Toast.makeText(context, R.string.passenger_removed, Toast.LENGTH_SHORT).show();
-                                        ((Activity)v.getContext()).finish();
+                                routeCall.enqueue(new Callback<Route>() {
+                                    @SneakyThrows
+                                    @Override
+                                    public void onResponse(Call<Route> call, Response<Route> response) {
+                                        if (response.isSuccessful()) {
+                                            Toast.makeText(context, R.string.passenger_removed, Toast.LENGTH_SHORT).show();
+                                            ((Activity) v.getContext()).finish();
+                                        }
                                     }
-                                }
 
-                                @Override
-                                public void onFailure(Call<Route> call, Throwable t) {
+                                    @Override
+                                    public void onFailure(Call<Route> call, Throwable t) {
 
-                                }
-                            });
-                        }
-                    });
+                                    }
+                                });
+                            }
+                        });
 
-                    dialog.setNegativeButton("Não", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                        dialog.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
 
-                        }
-                    });
-                    dialog.create();
-                    dialog.show();
-               }
-            });
+                            }
+                        });
+                        dialog.create();
+                        dialog.show();
+                    }
+                });
+            }
         }
     }
 }

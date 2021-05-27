@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "831772999761",
+    "project_id": "sgv-app-e6850",
+    "storage_bucket": "sgv-app-e6850.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:831772999761:android:cb1ea4528f4b6838207870",
+        "android_client_info": {
+          "package_name": "br.com.gilberto.sgv"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "831772999761-4m0jt5p0na8n14o88pg65e13pe10l3jj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.gilberto.sgv",
+            "certificate_hash": "764332f55ad9067c74d7f97831843eb713dc7f33"
+          }
+        },
+        {
+          "client_id": "831772999761-j00t3m1a92t36i8nn7ag4dd1ifu06km8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1U-76sVITbBlAI16qRLQjSauY6sjVr6Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "831772999761-j00t3m1a92t36i8nn7ag4dd1ifu06km8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

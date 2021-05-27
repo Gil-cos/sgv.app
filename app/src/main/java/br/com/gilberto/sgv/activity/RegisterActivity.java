@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,8 +24,10 @@ import br.com.gilberto.sgv.util.SharedPreferencesUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -35,6 +38,7 @@ public class RegisterActivity extends AppCompatActivity {
     private RetrofitClientsUtils retrofitClientsUtils = new RetrofitClientsUtils();
     private SgvClient sgvClient = retrofitClientsUtils.createSgvClient();
     private SharedPreferencesUtils preferencesUtils = new SharedPreferencesUtils();
+    private String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +56,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
         addFormValidations();
+        retrieveToken();
 
         registerBtn.setOnClickListener(v -> {
             if (awesomeValidation.validate()) {
@@ -61,6 +66,7 @@ public class RegisterActivity extends AppCompatActivity {
                         cpf.getText().toString(),
                         email.getText().toString(),
                         password.getText().toString(),
+                        token,
                         getRole());
                 registerUser(user);
             } else {
@@ -104,6 +110,16 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<User> call, Throwable t) {
                 
+            }
+        });
+    }
+
+    public Task<String> retrieveToken() {
+        FirebaseMessaging firebaseMessaging = FirebaseMessaging.getInstance();
+        return firebaseMessaging.getToken().addOnSuccessListener(new OnSuccessListener<String>() {
+            @Override
+            public void onSuccess(String instanceIdResult) {
+                token = instanceIdResult;
             }
         });
     }

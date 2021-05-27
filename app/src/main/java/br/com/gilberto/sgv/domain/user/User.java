@@ -24,6 +24,7 @@ public class User implements Serializable {
     private String cpf;
     private String email;
     private String password;
+    private String notificationToken;
     private Role role;
     private Address address;
     private PassengerInfo passengerInfo;
@@ -32,12 +33,13 @@ public class User implements Serializable {
 
 
     public User(final String name, final String phone, final String cpf, final String email, final String password,
-                final Role role) {
+                final String notificationToken,final Role role) {
         this.name = name;
         this.phone = phone;
         this.cpf = cpf;
         this.email = email;
         this.password = password;
+        this.notificationToken = notificationToken;
         this.role = role;
     }
 
@@ -68,6 +70,10 @@ public class User implements Serializable {
     }
 
     public boolean isDriver() {
-        return role.equals(Role.DRIVER) ? true : false;
+        return role.equals(Role.DRIVER);
+    }
+
+    public boolean isPassenger() {
+        return role.equals(Role.PASSENGER);
     }
 }

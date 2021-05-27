@@ -22,8 +22,20 @@ public class Route implements Serializable {
     private Long id;
     private String description;
     private Period period;
+    private RouteStatus status;
     private User driver;
     private Institution institution;
 
 
+    public boolean isStandBy() {
+        return RouteStatus.STAND_BY.equals(status);
+    }
+
+    public boolean isPreparing() {
+        return RouteStatus.PREPARING.equals(status);
+    }
+
+    public boolean isTraveling() {
+        return RouteStatus.TRAVELING.equals(status);
+    }
 }
