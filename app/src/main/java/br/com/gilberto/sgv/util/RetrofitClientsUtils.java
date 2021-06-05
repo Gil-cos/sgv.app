@@ -13,7 +13,7 @@ public class RetrofitClientsUtils {
 
     public SgvClient createSgvClient() {
         final Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:8090")
+                .baseUrl("https://sgv-back.herokuapp.com")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         return retrofit.create(SgvClient.class);
