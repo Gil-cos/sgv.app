@@ -2,9 +2,13 @@ package br.com.gilberto.sgv.activity.fragments.home;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.appcompat.widget.AppCompatDrawableManager;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -15,6 +19,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +39,11 @@ import br.com.gilberto.sgv.dto.NotificationDataDto;
 import br.com.gilberto.sgv.dto.NotificationDto;
 import br.com.gilberto.sgv.util.RetrofitClientsUtils;
 import br.com.gilberto.sgv.util.SharedPreferencesUtils;
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
+import com.google.android.material.textfield.TextInputEditText;
+
+import br.com.gilberto.sgv.wrapper.SingleValueWrapper;
 import lombok.SneakyThrows;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -43,9 +57,12 @@ public class RouteInfoFragment extends Fragment {
     private SharedPreferencesUtils preferencesUtils = new SharedPreferencesUtils();
     private Route route;
     private Role role;
+    private SharedPreferences sharedPreferences;
     private TextView routeDescription, driverName, driverPhone, driverEmail, driverStreet, driverNumber, driverNeighborhood, driverCep, driverCity, routeStatus, statusTitle;
     private TextView vehicleBrand, vehicleModel, vehiclePlate, vehicleSeats, institutionName, institutionStreet, institutionNumber, institutionNeighborhood, institutionCep, institutionCity;
     private Button initiatePreparationBtn, initiateTravelBtn, finishTravelBtn;
+    private FloatingActionMenu driverFab;
+    private FloatingActionButton routeMapFab, shareLocationFab;
     private List<User> passengers = new ArrayList<>();
 
     public RouteInfoFragment() {
@@ -62,14 +79,13 @@ public class RouteInfoFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_route_info, container, false);
-
         Bundle data = getArguments();
         route = (Route) data.getSerializable("route");
         final User driver = route.getDriver();
         final Institution institution = route.getInstitution();
 
         setRouteInfo(root, driver, institution);
-        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(getString(R.string.authenticationInfo), 0);
+        sharedPreferences = this.getActivity().getSharedPreferences(getString(R.string.authenticationInfo), 0);
         role = Role.valueOf(preferencesUtils.retrieveUserRole(sharedPreferences));
         getPassengers();
         setStatusButtons();
@@ -95,7 +111,7 @@ public class RouteInfoFragment extends Fragment {
                                 routeStatus.setText(route.getStatus().getPrettyName());
                                 initiatePreparationBtn.setVisibility(View.INVISIBLE);
                                 initiateTravelBtn.setVisibility(View.VISIBLE);
-                                sendNotification(v);
+                                sendNotification(v, "Rota em Preparação!!", "A sua Rota: " + route.getDescription() + "\n" + "Entrou em preparação, confirme sua presenção");
                             }
 
                             @Override
@@ -139,6 +155,7 @@ public class RouteInfoFragment extends Fragment {
                                 routeStatus.setText(route.getStatus().getPrettyName());
                                 initiateTravelBtn.setVisibility(View.INVISIBLE);
                                 finishTravelBtn.setVisibility(View.VISIBLE);
+                                driverFab.setVisibility(View.VISIBLE);
                             }
 
                             @Override
@@ -182,6 +199,7 @@ public class RouteInfoFragment extends Fragment {
                                 routeStatus.setText(route.getStatus().getPrettyName());
                                 finishTravelBtn.setVisibility(View.INVISIBLE);
                                 initiatePreparationBtn.setVisibility(View.VISIBLE);
+                                driverFab.setVisibility(View.INVISIBLE);
                             }
 
                             @Override
@@ -207,11 +225,42 @@ public class RouteInfoFragment extends Fragment {
         return root;
     }
 
-    public void sendNotification(View view){
+    private void openMap() throws UnsupportedEncodingException {
+        Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(createMapsURI()));
+        startActivity(intent);
+    }
+
+    @NotNull
+    private String createMapsURI() throws UnsupportedEncodingException {
+        final List<String> waypoints = getWaypoints();
+        final String url = "https://www.google.com/maps/dir/?api=1";
+        StringBuilder strBuilder = new StringBuilder(url);
+        strBuilder.append("&origin=" + encodeValue(route.getDriver().getAddress().getFormattedAddress()));
+        for (final String address : waypoints) {
+            strBuilder.append("&waypoints=" + encodeValue(address));
+        }
+        strBuilder.append("&destination=" + encodeValue(route.getInstitution().getAddress().getFormattedAddress()));
+        return strBuilder.toString();
+    }
+
+    private String encodeValue(String value) throws UnsupportedEncodingException {
+        return URLEncoder.encode(value, StandardCharsets.UTF_8.toString());
+    }
+
+    private List<String> getWaypoints() {
+        final List<String> waypoints = new ArrayList<>();
+        for (final User passenger : passengers) {
+            if (passenger.hasPassengerConfirmed()){
+                waypoints.add(passenger.getAddress().getFormattedAddress());
+            }
+        }
+        return waypoints;
+    }
+
+    public void sendNotification(View view, final String title, final String message){
         for (final User passenger : passengers) {
             final String to = passenger.getNotificationToken();
-            NotificationDto notificationDto = new NotificationDto("Rota em Preparação!!", "A sua Rota: " + route.getDescription() + "\n" + "Entrou em preparação, confirme sua presenção");
-            NotificationDataDto notificationDataDto = new NotificationDataDto(to, notificationDto );
+            NotificationDataDto notificationDataDto = createNotificationDto(to, title, message);
 
             Call<NotificationDataDto> call = notificationClient.sendNotification( notificationDataDto );
             call.enqueue(new Callback<NotificationDataDto>() {
@@ -227,6 +276,12 @@ public class RouteInfoFragment extends Fragment {
                 }
             });
         }
+    }
+
+    @NotNull
+    private NotificationDataDto createNotificationDto(final String to, final String title, final String message) {
+        NotificationDto notificationDto = new NotificationDto(title, message);
+        return new NotificationDataDto(to, notificationDto );
     }
 
     private void getPassengers() {
@@ -254,6 +309,7 @@ public class RouteInfoFragment extends Fragment {
             initiateTravelBtn.setVisibility(View.VISIBLE);
         }
         if (route.isTraveling() && role.equals(Role.DRIVER)) {
+            driverFab.setVisibility(View.VISIBLE);
             finishTravelBtn.setVisibility(View.VISIBLE);
         }
     }
@@ -283,6 +339,9 @@ public class RouteInfoFragment extends Fragment {
         initiatePreparationBtn = root.findViewById(R.id.initiatePreparationButton);
         initiateTravelBtn = root.findViewById(R.id.initiateTravelButton);
         finishTravelBtn = root.findViewById(R.id.finishTravelButton);
+        driverFab = root.findViewById(R.id.driverMapsfab);
+        routeMapFab = root.findViewById(R.id.openRouteMap);
+        shareLocationFab = root.findViewById(R.id.shareLocation);
 
         routeDescription.setText(route.getDescription());
         routeStatus.setText(route.getStatus().getPrettyName());
@@ -304,6 +363,60 @@ public class RouteInfoFragment extends Fragment {
         institutionNeighborhood.setText(institution.getAddress().getNeighborhood());
         institutionCep.setText(institution.getAddress().getCep());
         institutionCity.setText(institution.getAddress().getCity());
+        routeMapFab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_baseline_location_on_24));
+        shareLocationFab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_baseline_share_location_24));
+
+        routeMapFab.setOnClickListener(new View.OnClickListener() {
+            @SneakyThrows
+            @Override
+            public void onClick(View v) {
+                openMap();
+            }
+        });
+
+        shareLocationFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder dialog = new AlertDialog.Builder(v.getRootView().getContext());
+
+                dialog.setTitle("Compartilhar Localização");
+                dialog.setMessage("Cole o link gerado no Google maps.");
+
+                final View customLayout = getLayoutInflater().inflate(R.layout.dialog_share_location, null);
+                dialog.setView(customLayout);
+
+                dialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        TextInputEditText shareLink = customLayout.findViewById(R.id.shareLinkEditText);
+                        Call<Void> routeCall = sgvClient.saveSharedLocationLink(preferencesUtils.retrieveToken(sharedPreferences), route.getId(), new SingleValueWrapper(shareLink.getText().toString()));
+                        routeCall.enqueue(new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                sendNotification(v, "Viagem Iniciada!!!", "O link com a localização do seu motorista esta disponível.");
+                            }
+
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+
+                            }
+                        });
+                    }
+                });
+
+                dialog.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+
+                dialog.create();
+                dialog.show();
+            }
+        });
 
     }
+
 }

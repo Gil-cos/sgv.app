@@ -35,4 +35,11 @@ public class Address implements Serializable {
         this.city = address.getCity();
         this.number = address.getNumber();
     }
+
+    public String getFormattedAddress() {
+        return String.format("%s %s %s",
+                this.getStreet(),
+                this.getNeighborhood(),
+                this.getNumber());
+    }
 }

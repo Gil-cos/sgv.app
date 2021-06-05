@@ -74,12 +74,20 @@
     <string name="add_passenger">Adicionar Passageiro</string>
     <string name="change_route_status">Mudar Status da Rota</string>
     <string name="passenger_removed">Passageiro Removido</string>
+    <string name="presence_confirmed">Presença Confirmada</string>
     <string name="remove_passenger">Remover Passageiro</string>
+    <string name="confirm_presence">Confirmar Presença</string>
     <string name="want_to_remove_passenger">Deseja remover o Passageiro </string>
+    <string name="want_to_confirm_presence">Deseja confirmar presença para a proxima viagem?</string>
+    <string name="want_to_decline_presence">Deseja não confirmar presença para a proxima viagem?</string>
     <string name="default_notification_channel_id">fcm_default_channel</string>
     <string name="initiate_preparation">Iniciar Preparação</string>
     <string name="initiate_travel">Iniciar Viagem</string>
     <string name="finish_travel">Terminar Viagem</string>
     <string name="status">Status</string>
     <string name="status_title">Status:</string>
+    <string name="title_activity_driver_maps">Map</string>
+    <string name="open_map">Abrir Mapa</string>
+    <string name="share_location">Compartilhar Localização</string>
+    <string name="google_link">Google Link</string>
 </resources>

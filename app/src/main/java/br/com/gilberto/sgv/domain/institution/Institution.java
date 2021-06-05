@@ -17,4 +17,5 @@ public class Institution implements Serializable {
     private Long id;
     private String name;
     private Address address;
+
 }

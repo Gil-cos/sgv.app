@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import br.com.gilberto.sgv.domain.address.Address;
 import br.com.gilberto.sgv.domain.institution.Institution;
 import br.com.gilberto.sgv.domain.user.User;
 import br.com.gilberto.sgv.domain.user.driver.DriverInfo;
@@ -25,6 +26,7 @@ public class Route implements Serializable {
     private RouteStatus status;
     private User driver;
     private Institution institution;
+    private String sharedLocationLink;
 
 
     public boolean isStandBy() {
@@ -38,4 +40,9 @@ public class Route implements Serializable {
     public boolean isTraveling() {
         return RouteStatus.TRAVELING.equals(status);
     }
+
+    public boolean isActivated() {
+        return isPreparing() || isTraveling();
+    }
+
 }

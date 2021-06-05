@@ -45,6 +45,7 @@ public class RoutePassengersFragment extends Fragment {
     private RecyclerView recyclerView;
     private Route route;
     private Role role;
+    private Long userId;
 
     public RoutePassengersFragment() {
         // Required empty public constructor
@@ -73,6 +74,7 @@ public class RoutePassengersFragment extends Fragment {
 
         SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(getString(R.string.authenticationInfo), 0);
         role = Role.valueOf(preferencesUtils.retrieveUserRole(sharedPreferences));
+        userId = preferencesUtils.retrieveUserId(sharedPreferences);
         Bundle data = getArguments();
         route = (Route) data.getSerializable("route");
 
@@ -81,7 +83,7 @@ public class RoutePassengersFragment extends Fragment {
         }
 
         recyclerView = root.findViewById(R.id.passengersRecyclerView);
-        passengerAdapter = new PassengerAdapter(route.getId(), role, passengers, this.getContext());
+        passengerAdapter = new PassengerAdapter(route, role, userId, passengers, this.getContext());
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         recyclerView.setLayoutManager( layoutManager );
         recyclerView.setHasFixedSize(true);

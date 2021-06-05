@@ -29,6 +29,7 @@ public class User implements Serializable {
     private Address address;
     private PassengerInfo passengerInfo;
     private DriverInfo driverInfo;
+    private Boolean isConfirmed;
     private List<Route> routes = new ArrayList<>();
 
 
@@ -75,5 +76,9 @@ public class User implements Serializable {
 
     public boolean isPassenger() {
         return role.equals(Role.PASSENGER);
+    }
+
+    public Boolean hasPassengerConfirmed() {
+        return this.isConfirmed != null ? getIsConfirmed() : false;
     }
 }

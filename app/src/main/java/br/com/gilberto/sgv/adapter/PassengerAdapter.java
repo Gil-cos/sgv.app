@@ -37,16 +37,18 @@ public class PassengerAdapter extends RecyclerView.Adapter<PassengerAdapter.MyVi
     private RetrofitClientsUtils retrofitClientsUtils = new RetrofitClientsUtils();
     private SgvClient sgvClient = retrofitClientsUtils.createSgvClient();
     private SharedPreferencesUtils preferencesUtils = new SharedPreferencesUtils();
-    private Long routeId;
+    private Route route;
     private Role role;
+    private Long userId;
     private List<User> passengers;
     private Context context;
 
-    public PassengerAdapter(Long routeId, Role role, List<User> passengers, Context context) {
-        this.routeId = routeId;
+    public PassengerAdapter(Route route, Role role, Long userId, List<User> passengers, Context context) {
+        this.route = route;
         this.passengers = passengers;
         this.context = context;
         this.role = role;
+        this.userId = userId;
     }
 
     @NonNull
@@ -63,7 +65,6 @@ public class PassengerAdapter extends RecyclerView.Adapter<PassengerAdapter.MyVi
         Address address = passenger.getAddress();
 
         if (passenger != null) {
-
             holder.id.setText(passenger.getId().toString());
             holder.name.setText(passenger.getName());
             holder.phone.setText(passenger.getPhone());
@@ -71,6 +72,33 @@ public class PassengerAdapter extends RecyclerView.Adapter<PassengerAdapter.MyVi
             holder.street.setText(address != null ? address.getStreet() : null);
             holder.neighborhood.setText(address != null ? address.getNeighborhood() : null);
             holder.city.setText(address != null ? address.getCity() : null);
+
+
+            if (role.equals(Role.PASSENGER) && route.isPreparing()) {
+                if (passenger.getId().equals(userId)) {
+                    if (passenger.getIsConfirmed() != null && passenger.getIsConfirmed().equals(true)) {
+                        holder.thumbUp.setVisibility(View.VISIBLE);
+                        holder.thumbDownBtn.setVisibility(View.VISIBLE);
+
+                    } else if (passenger.getIsConfirmed() != null && passenger.getIsConfirmed().equals(false)) {
+                        holder.thumbDown.setVisibility(View.VISIBLE);
+                        holder.thumbUpBtn.setVisibility(View.VISIBLE);
+
+                    } else {
+                        holder.thumbDownBtn.setVisibility(View.VISIBLE);
+                        holder.thumbUpBtn.setVisibility(View.VISIBLE);
+                    }
+                }
+            } else if (role.equals(Role.DRIVER) && route.isPreparing()) {
+                if (passenger.getIsConfirmed() != null) {
+                    if (passenger.getIsConfirmed().equals(true)) {
+                        holder.thumbUp.setVisibility(View.VISIBLE);
+
+                    } else if (passenger.getIsConfirmed().equals(false)) {
+                        holder.thumbDown.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
         }
     }
 
@@ -82,7 +110,7 @@ public class PassengerAdapter extends RecyclerView.Adapter<PassengerAdapter.MyVi
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView id, name, phone, number, street, neighborhood, city;
-        ImageView delete, thumbUp, thumbDown;
+        ImageView delete, thumbUp, thumbDown, thumbUpBtn, thumbDownBtn;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -97,53 +125,146 @@ public class PassengerAdapter extends RecyclerView.Adapter<PassengerAdapter.MyVi
             delete = itemView.findViewById(R.id.imageViewDelete);
             thumbDown = itemView.findViewById(R.id.imageViewThumbDown);
             thumbUp = itemView.findViewById(R.id.imageViewThumbUp);
+            thumbUpBtn = itemView.findViewById(R.id.imageViewThumbUpBtn);
+            thumbDownBtn = itemView.findViewById(R.id.imageViewThumbDownBtn);
 
-            if (role.equals(Role.PASSENGER)) {
+            if (role.equals(Role.PASSENGER) || route.isActivated()) {
                 delete.setVisibility(View.GONE);
-            } else {
-                delete.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        AlertDialog.Builder dialog = new AlertDialog.Builder(v.getRootView().getContext());
-
-                        dialog.setTitle(R.string.remove_passenger);
-                        dialog.setMessage(context.getString(R.string.want_to_remove_passenger) + " " + name.getText().toString() + "?");
-
-                        dialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Call<Route> routeCall = sgvClient.removePassenger(preferencesUtils.retrieveToken(context.getSharedPreferences(context.getString(R.string.authenticationInfo), 0)),
-                                        routeId, Long.parseLong(id.getText().toString()));
-
-                                routeCall.enqueue(new Callback<Route>() {
-                                    @SneakyThrows
-                                    @Override
-                                    public void onResponse(Call<Route> call, Response<Route> response) {
-                                        if (response.isSuccessful()) {
-                                            Toast.makeText(context, R.string.passenger_removed, Toast.LENGTH_SHORT).show();
-                                            ((Activity) v.getContext()).finish();
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onFailure(Call<Route> call, Throwable t) {
-
-                                    }
-                                });
-                            }
-                        });
-
-                        dialog.setNegativeButton("Não", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                            }
-                        });
-                        dialog.create();
-                        dialog.show();
-                    }
-                });
             }
+
+            delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(v.getRootView().getContext());
+
+                    dialog.setTitle(R.string.remove_passenger);
+                    dialog.setMessage(context.getString(R.string.want_to_remove_passenger) + " " + name.getText().toString() + "?");
+
+                    dialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Call<Route> routeCall = sgvClient.removePassenger(preferencesUtils.retrieveToken(context.getSharedPreferences(context.getString(R.string.authenticationInfo), 0)),
+                                    route.getId(), Long.parseLong(id.getText().toString()));
+
+                            routeCall.enqueue(new Callback<Route>() {
+                                @SneakyThrows
+                                @Override
+                                public void onResponse(Call<Route> call, Response<Route> response) {
+                                    if (response.isSuccessful()) {
+                                        Toast.makeText(context, R.string.passenger_removed, Toast.LENGTH_SHORT).show();
+                                        ((Activity) v.getContext()).finish();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<Route> call, Throwable t) {
+
+                                }
+                            });
+                        }
+                    });
+
+                    dialog.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+                    dialog.create();
+                    dialog.show();
+                }
+            });
+
+            thumbUpBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(v.getRootView().getContext());
+
+                    dialog.setTitle(R.string.confirm_presence);
+                    dialog.setMessage(context.getString(R.string.want_to_confirm_presence));
+
+                    dialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Call<User> routeCall = sgvClient.confirmPresence(preferencesUtils.retrieveToken(context.getSharedPreferences(context.getString(R.string.authenticationInfo), 0)),
+                                    Long.parseLong(id.getText().toString()), route.getId());
+
+                            routeCall.enqueue(new Callback<User>() {
+                                @SneakyThrows
+                                @Override
+                                public void onResponse(Call<User> call, Response<User> response) {
+                                    if (response.isSuccessful()) {
+                                        Toast.makeText(context, R.string.presence_confirmed, Toast.LENGTH_SHORT).show();
+                                        thumbUp.setVisibility(View.VISIBLE);
+                                        thumbUpBtn.setVisibility(View.GONE);
+                                        thumbDownBtn.setVisibility(View.VISIBLE);
+                                        thumbDown.setVisibility(View.GONE);
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<User> call, Throwable t) {
+
+                                }
+                            });
+                        }
+                    });
+
+                    dialog.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+                    dialog.create();
+                    dialog.show();
+                }
+            });
+
+            thumbDownBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(v.getRootView().getContext());
+
+                    dialog.setTitle(R.string.confirm_presence);
+                    dialog.setMessage(context.getString(R.string.want_to_decline_presence));
+
+                    dialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Call<User> routeCall = sgvClient.declinePresence(preferencesUtils.retrieveToken(context.getSharedPreferences(context.getString(R.string.authenticationInfo), 0)),
+                                    Long.parseLong(id.getText().toString()), route.getId());
+
+                            routeCall.enqueue(new Callback<User>() {
+                                @SneakyThrows
+                                @Override
+                                public void onResponse(Call<User> call, Response<User> response) {
+                                    if (response.isSuccessful()) {
+                                        thumbDown.setVisibility(View.VISIBLE);
+                                        thumbDownBtn.setVisibility(View.GONE);
+                                        thumbUpBtn.setVisibility(View.VISIBLE);
+                                        thumbUp.setVisibility(View.GONE);
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<User> call, Throwable t) {
+
+                                }
+                            });
+                        }
+                    });
+
+                    dialog.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+                    dialog.create();
+                    dialog.show();
+                }
+            });
         }
     }
 }

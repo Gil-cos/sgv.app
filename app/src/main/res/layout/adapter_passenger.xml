@@ -28,11 +28,29 @@
                 android:textSize="16sp" />
 
             <ImageView
+                android:id="@+id/imageViewThumbUpBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:visibility="gone"
+                android:gravity="end"
+                app:srcCompat="@drawable/ic_baseline_thumb_up_gray_24" />
+
+            <ImageView
+                android:id="@+id/imageViewThumbDownBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_baseline_thumb_down_gray_24" />
+
+            <ImageView
                 android:id="@+id/imageViewThumbUp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:visibility="gone"
+                android:gravity="end"
                 app:srcCompat="@drawable/ic_baseline_thumb_up_24" />
 
             <ImageView
@@ -48,6 +66,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:gravity="end"
                 app:srcCompat="@drawable/ic_baseline_delete_24" />
 
             <TextView
@@ -86,7 +105,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="5"
-            android:text="@string/address"
+            android:text="@string/address_title"
             android:textColor="#696969"
             android:textSize="14sp" />
 

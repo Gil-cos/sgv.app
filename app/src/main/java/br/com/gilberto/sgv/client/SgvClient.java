@@ -7,6 +7,7 @@ import br.com.gilberto.sgv.domain.route.RouteStatus;
 import br.com.gilberto.sgv.domain.user.User;
 import br.com.gilberto.sgv.dto.TokenDto;
 import br.com.gilberto.sgv.wrapper.LoginWrapper;
+import br.com.gilberto.sgv.wrapper.SingleValueWrapper;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -33,6 +34,15 @@ public interface SgvClient {
     @GET("/users/pages")
     Call<List<User>> getPassengersByFilter(@Header("Authorization") String authorization, @Query("name") String name);
 
+    @PUT("/users/{passengerId}/passengers/confirm-presence/{routeId}")
+    Call<User> confirmPresence(@Header("Authorization") String authorization, @Path("passengerId") Long passengerId, @Path("routeId") Long routeId);
+
+    @PUT("/users/{passengerId}/passengers/decline-presence/{routeId}")
+    Call<User> declinePresence(@Header("Authorization") String authorization, @Path("passengerId") Long passengerId, @Path("routeId") Long routeId);
+
+    @PUT("/users/{passengerId}/passengers/clear-confirmation/{routeId}")
+    Call<User> clearConfirmation(@Header("Authorization") String authorization, @Path("passengerId") Long passengerId, @Path("routeId") Long routeId);
+
     @POST("/routes/create")
     Call<Route> createRoute(@Header("Authorization") String authorization, @Body Route route);
 
@@ -53,5 +63,8 @@ public interface SgvClient {
 
     @PUT("/routes/{id}/status/{status}")
     Call<Route> changeStatus(@Header("Authorization") String authorization, @Path("id") Long id, @Path("status") RouteStatus status);
+
+    @PUT("/routes/{routeId}/link")
+    Call<Void> saveSharedLocationLink(@Header("Authorization") String authorization, @Path("routeId") Long routeId, @Body SingleValueWrapper value);
 
 }
