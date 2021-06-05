@@ -649,7 +649,6 @@
             app:layout_constraintTop_toBottomOf="@+id/institutionCardView"
             app:strokeColor="@color/purple_700" />
 
-
         <com.github.clans.fab.FloatingActionMenu
             android:id="@+id/driverMapsfab"
             android:layout_width="wrap_content"
@@ -685,6 +684,20 @@
                 app:tint="@android:color/white" />
 
         </com.github.clans.fab.FloatingActionMenu>
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/passengerFab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:clickable="true"
+            android:visibility="invisible"
+            app:fab_colorNormal="@color/teal_200"
+            app:fab_colorPressed="@color/teal_700"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@android:color/white"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

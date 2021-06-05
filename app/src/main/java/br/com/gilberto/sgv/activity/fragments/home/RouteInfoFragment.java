@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.appcompat.widget.AppCompatDrawableManager;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -62,7 +61,7 @@ public class RouteInfoFragment extends Fragment {
     private TextView vehicleBrand, vehicleModel, vehiclePlate, vehicleSeats, institutionName, institutionStreet, institutionNumber, institutionNeighborhood, institutionCep, institutionCity;
     private Button initiatePreparationBtn, initiateTravelBtn, finishTravelBtn;
     private FloatingActionMenu driverFab;
-    private FloatingActionButton routeMapFab, shareLocationFab;
+    private FloatingActionButton routeMapFab, shareLocationFab, passengerFab;
     private List<User> passengers = new ArrayList<>();
 
     public RouteInfoFragment() {
@@ -225,6 +224,11 @@ public class RouteInfoFragment extends Fragment {
         return root;
     }
 
+    private void openSharedLocation() {
+        Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(route.getSharedLocationLink()));
+        startActivity(intent);
+    }
+
     private void openMap() throws UnsupportedEncodingException {
         Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(createMapsURI()));
         startActivity(intent);
@@ -312,6 +316,9 @@ public class RouteInfoFragment extends Fragment {
             driverFab.setVisibility(View.VISIBLE);
             finishTravelBtn.setVisibility(View.VISIBLE);
         }
+        if (route.isTraveling() && role.equals(Role.PASSENGER)) {
+            passengerFab.setVisibility(View.VISIBLE);
+        }
     }
 
     private void setRouteInfo(View root, final User driver, final Institution institution) {
@@ -342,6 +349,7 @@ public class RouteInfoFragment extends Fragment {
         driverFab = root.findViewById(R.id.driverMapsfab);
         routeMapFab = root.findViewById(R.id.openRouteMap);
         shareLocationFab = root.findViewById(R.id.shareLocation);
+        passengerFab = root.findViewById(R.id.passengerFab);
 
         routeDescription.setText(route.getDescription());
         routeStatus.setText(route.getStatus().getPrettyName());
@@ -364,6 +372,7 @@ public class RouteInfoFragment extends Fragment {
         institutionCep.setText(institution.getAddress().getCep());
         institutionCity.setText(institution.getAddress().getCity());
         routeMapFab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_baseline_location_on_24));
+        passengerFab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_baseline_location_on_24));
         shareLocationFab.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_baseline_share_location_24));
 
         routeMapFab.setOnClickListener(new View.OnClickListener() {
@@ -417,6 +426,14 @@ public class RouteInfoFragment extends Fragment {
             }
         });
 
+        passengerFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openSharedLocation();
+            }
+        });
     }
+
+
 
 }
